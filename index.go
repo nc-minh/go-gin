@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	//static file
@@ -32,29 +32,32 @@ func main()  {
 	{
 		v1 := api.Group("/v1")
 		{
-			v1.GET("/heath", func (ctx *gin.Context)  {
+			v1.GET("/heath", func(ctx *gin.Context) {
 				ctx.String(http.StatusOK, "Service up!")
 			})
 		}
 	}
 
 	//upload single file
-	r.POST("/upload", func (ctx *gin.Context)  {
+	r.POST("/upload", func(ctx *gin.Context) {
 		file, _ := ctx.FormFile("file")
-		ctx.SaveUploadedFile(file, "./assets/upload/" + file.Filename)
-		ctx.String(http.StatusOK, file.Filename + " uploaded!")
+		ctx.SaveUploadedFile(file, "./assets/upload/"+file.Filename)
+		ctx.String(http.StatusOK, file.Filename+" uploaded!")
 	})
 
 	//upload multiple files
-	r.POST("/uploads", func (ctx *gin.Context)  {
+	r.POST("/uploads", func(ctx *gin.Context) {
 		form, _ := ctx.MultipartForm()
 		files := form.File["files"]
-		
+
 		for _, file := range files {
-			ctx.SaveUploadedFile(file, "./assets/upload/" + file.Filename)
+			ctx.SaveUploadedFile(file, "./assets/upload/"+file.Filename)
 		}
 
-		ctx.String(http.StatusOK, "files uploaded!")
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "files uploaded!",
+			"length":  len(files),
+		})
 	})
 
 	//Run server
@@ -67,32 +70,32 @@ func getPing(ctx *gin.Context) {
 
 func postPing(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
-			"message": "This is a post request",
-		})
+		"message": "This is a post request",
+	})
 }
 
 func getUser(ctx *gin.Context) {
 	id := ctx.Param("id")
-	ctx.String(http.StatusOK, "User ID: " + id)
+	ctx.String(http.StatusOK, "User ID: "+id)
 }
 
 func getUserWithQueryString(ctx *gin.Context) {
 	name := ctx.Query("name")
 	age := ctx.Query("age")
-	ctx.String(http.StatusOK, "Name: " + name + " Age: " + age)
+	ctx.String(http.StatusOK, "Name: "+name+" Age: "+age)
 }
 
 func getUserWithForm(ctx *gin.Context) {
 	name := ctx.PostForm("name")
 	age := ctx.PostForm("age")
-	ctx.String(http.StatusOK, "Name: " + name + " Age: " + age)
+	ctx.String(http.StatusOK, "Name: "+name+" Age: "+age)
 }
 
-//Middleware
+// Middleware
 func adminMiddleware(ctx *gin.Context) {
 	name := ctx.PostForm("name")
 
-	if(name != "admin") {
+	if name != "admin" {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"message": "You are not an admin",
 		})
@@ -101,5 +104,5 @@ func adminMiddleware(ctx *gin.Context) {
 	}
 
 	ctx.Next()
-	
+
 }
