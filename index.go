@@ -4,6 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	db "go-gin/databases"
+	"go-gin/handlers"
 )
 
 func main() {
@@ -60,11 +63,20 @@ func main() {
 		})
 	})
 
+	//init db
+	DB := db.Init()
+	h := handlers.New(DB)
+
+	//books service
+	r.POST("/books", h.AddBook)
+	r.GET("/books", h.GetAllBooks)
+
 	//Run server
 	r.Run(":3333")
 }
 
 func getPing(ctx *gin.Context) {
+
 	ctx.String(http.StatusOK, "pong")
 }
 
