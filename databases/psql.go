@@ -19,6 +19,7 @@ func Init() *gorm.DB {
 	}
 
 	db.AutoMigrate(&models.Book{})
+	db.AutoMigrate(&models.User{})
 
 	return db
 }

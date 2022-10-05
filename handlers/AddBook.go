@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	models "go-gin/models"
+	"go-gin/models"
 
 	"github.com/gin-gonic/gin"
 )

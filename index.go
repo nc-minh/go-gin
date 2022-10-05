@@ -21,12 +21,6 @@ func main() {
 	//POST method
 	r.POST("/post", postPing)
 
-	//GET method with parameter
-	r.GET("/users/:id", getUser)
-
-	//GET method with queryString
-	r.GET("/users", getUserWithQueryString)
-
 	//POST method with formdata
 	r.POST("/formdata", adminMiddleware, getUserWithForm)
 
@@ -70,6 +64,8 @@ func main() {
 	//books service
 	r.POST("/books", h.AddBook)
 	r.GET("/books", h.GetAllBooks)
+	r.GET("/users", h.GetAllUsers)
+	r.POST("/users", h.AddUser)
 
 	//Run server
 	r.Run(":3333")
@@ -86,16 +82,16 @@ func postPing(ctx *gin.Context) {
 	})
 }
 
-func getUser(ctx *gin.Context) {
-	id := ctx.Param("id")
-	ctx.String(http.StatusOK, "User ID: "+id)
-}
+// func getUser(ctx *gin.Context) {
+// 	id := ctx.Param("id")
+// 	ctx.String(http.StatusOK, "User ID: "+id)
+// }
 
-func getUserWithQueryString(ctx *gin.Context) {
-	name := ctx.Query("name")
-	age := ctx.Query("age")
-	ctx.String(http.StatusOK, "Name: "+name+" Age: "+age)
-}
+// func getUserWithQueryString(ctx *gin.Context) {
+// 	name := ctx.Query("name")
+// 	age := ctx.Query("age")
+// 	ctx.String(http.StatusOK, "Name: "+name+" Age: "+age)
+// }
 
 func getUserWithForm(ctx *gin.Context) {
 	name := ctx.PostForm("name")

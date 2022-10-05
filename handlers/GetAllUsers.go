@@ -8,14 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h handler) GetAllBooks(ctx *gin.Context) {
-	var books []models.Book
+func (h handler) GetAllUsers(ctx *gin.Context) {
+	var users []models.User
 
-	if result := h.DB.Find(&books); result.Error != nil {
+	result := h.DB.Find(&users)
+
+	if(result.Error != nil){
 		log.Fatalln(result.Error)
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"data": books,
+		"data": users,
 	})
 }
