@@ -1,0 +1,1 @@
+nodemon --exec go run index.go --signal SIGTERM
