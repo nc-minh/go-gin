@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h handler) AddBook(ctx *gin.Context) {
+func AddBook(ctx *gin.Context) {
 	// Read to request body
 	body, err := ioutil.ReadAll(ctx.Request.Body)
 
@@ -24,9 +23,9 @@ func (h handler) AddBook(ctx *gin.Context) {
 	json.Unmarshal(body, &book)
 
 	// Append to the Books table
-	if result := h.DB.Create(&book); result.Error != nil {
-		fmt.Println(result.Error)
-	}
+	// if result := h.DB.Create(&book); result.Error != nil {
+	// 	fmt.Println(result.Error)
+	// }
 
 	// Send a 201 created response
 	ctx.JSON(http.StatusCreated, gin.H{

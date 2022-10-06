@@ -3,6 +3,7 @@ package db
 import (
 	"log"
 
+	"github.com/fatih/color"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -20,6 +21,8 @@ func Init() *gorm.DB {
 
 	db.AutoMigrate(&models.Book{})
 	db.AutoMigrate(&models.User{})
+
+	color.Green("Database connected")
 
 	return db
 }

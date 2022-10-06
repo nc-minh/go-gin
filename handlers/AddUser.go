@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -12,7 +11,7 @@ import (
 	"go-gin/utils/validators"
 )
 
-func (h handler) AddUser(ctx *gin.Context) {
+func AddUser(ctx *gin.Context) {
 
 	var user models.User
 
@@ -35,15 +34,20 @@ func (h handler) AddUser(ctx *gin.Context) {
 		return
 	}
 
-	// Append to the Books table
-	if result := h.DB.Create(&user); result.Error != nil {
-		fmt.Println(result.Error)
+	result, err := UserRepo.Save(&user)
+
+	if err != nil {
+		log.Fatalln(err.Error())
+		ctx.JSON(http.StatusExpectationFailed, gin.H{
+			"message": "Create Error Failed",
+		})
+		return
 	}
 
 	// Send a 201 created response
 	ctx.JSON(http.StatusCreated, gin.H{
-		"status":     http.StatusCreated,
-		"message":    "User item created successfully!",
-		"resourceId": user.ID,
+		"status":  http.StatusCreated,
+		"message": "User item created successfully!",
+		"result":  result,
 	})
 }

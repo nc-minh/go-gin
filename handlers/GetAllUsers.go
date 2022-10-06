@@ -1,23 +1,21 @@
 package handlers
 
 import (
-	"go-gin/models"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (h handler) GetAllUsers(ctx *gin.Context) {
-	var users []models.User
+func GetAllUsers(ctx *gin.Context) {
 
-	result := h.DB.Find(&users)
+	result, err := UserRepo.FindAll()
 
-	if(result.Error != nil){
-		log.Fatalln(result.Error)
+	if err != nil {
+		log.Fatalln(err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"data": users,
+		"data": result,
 	})
 }

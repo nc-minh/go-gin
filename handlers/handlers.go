@@ -1,8 +1,13 @@
 package handlers
 
 import (
+	db "go-gin/databases"
+	repoimpl "go-gin/repository/impl"
+
 	"gorm.io/gorm"
 )
+
+var UserRepo = repoimpl.NewUserRepo(db.Init())
 
 type handler struct {
 	DB *gorm.DB

@@ -1,18 +1,17 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
 	db "go-gin/databases"
 	"go-gin/handlers"
-	"go-gin/models"
-	"go-gin/utils/validators"
 
 	repoimpl "go-gin/repository/impl"
 )
+
+var UserRepo = repoimpl.NewUserRepo(db.Init())
 
 func main() {
 	r := gin.Default()
@@ -63,56 +62,12 @@ func main() {
 	})
 
 	//init db
-	DB := db.Init()
-	h := handlers.New(DB)
 
 	//books service
-	r.POST("/books", h.AddBook)
-	r.GET("/books", h.GetAllBooks)
-	r.GET("/users", h.GetAllUsers)
-	// r.POST("/users", h.AddUser)
-
-	//controllers
-	userRepo := repoimpl.NewUserRepo(DB)
-	r.POST("/users", func(ctx *gin.Context) {
-		var user models.User
-
-		err := ctx.ShouldBindJSON(&user)
-
-		var validationError error = validators.Validate(&user)
-
-		if validationError != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": validationError.Error(),
-			})
-			return
-		}
-
-		if err != nil {
-			log.Fatalln(err.Error())
-			ctx.JSON(http.StatusExpectationFailed, gin.H{
-				"message": "Create Error Failed",
-			})
-			return
-		}
-
-		result, err := userRepo.Save(&user)
-
-		if err != nil {
-			log.Fatalln(err.Error())
-			ctx.JSON(http.StatusExpectationFailed, gin.H{
-				"message": "Create Error Failed",
-			})
-			return
-		}
-
-		// Send a 201 created response
-		ctx.JSON(http.StatusCreated, gin.H{
-			"status":  http.StatusCreated,
-			"message": "User item created successfully!",
-			"result":  result,
-		})
-	})
+	r.POST("/books", handlers.AddBook)
+	r.GET("/books", handlers.GetAllBooks)
+	r.GET("/users", handlers.GetAllUsers)
+	r.POST("/users", handlers.AddUser)
 
 	//Run server
 	r.Run(":3333")
