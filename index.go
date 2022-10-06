@@ -5,19 +5,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	db "go-gin/databases"
 	"go-gin/handlers"
-
-	repoimpl "go-gin/repository/impl"
 )
-
-var UserRepo = repoimpl.NewUserRepo(db.Init())
 
 func main() {
 	r := gin.Default()
 
 	//static file
 	r.Static("/assets", "./assets")
+
+	//connect postgres database
+	// db.ConnnectPostgres()
 
 	//GET method
 	r.GET("/ping", getPing)
@@ -66,8 +64,12 @@ func main() {
 	//books service
 	r.POST("/books", handlers.AddBook)
 	r.GET("/books", handlers.GetAllBooks)
+
 	r.GET("/users", handlers.GetAllUsers)
+	r.GET("/users/:id", handlers.GetUser)
 	r.POST("/users", handlers.AddUser)
+	r.PUT("/users/:id", handlers.UpdateUser)
+	r.DELETE("/users/:id", handlers.DeleteUser)
 
 	//Run server
 	r.Run(":3333")

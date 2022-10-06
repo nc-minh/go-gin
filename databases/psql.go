@@ -10,7 +10,13 @@ import (
 	models "go-gin/models"
 )
 
-func Init() *gorm.DB {
+type Postgres struct {
+	*gorm.DB
+}
+
+var Psql = &Postgres{}
+
+func ConnnectPostgres() *Postgres {
 	dbURL := "postgres://mars:mars@localhost:5432/test"
 
 	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
@@ -22,7 +28,8 @@ func Init() *gorm.DB {
 	db.AutoMigrate(&models.Book{})
 	db.AutoMigrate(&models.User{})
 
-	color.Green("Database connected")
+	Psql.DB = db
 
-	return db
+	color.Green("Database connected")
+	return Psql
 }

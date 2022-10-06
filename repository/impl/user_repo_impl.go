@@ -3,6 +3,7 @@ package repoimpl
 import (
 	"go-gin/models"
 	"go-gin/repository"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -30,6 +31,7 @@ func (u *UserRepoImpl) FindById(id int) (*models.User, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &user, nil
 }
 
@@ -42,7 +44,9 @@ func (u *UserRepoImpl) Save(user *models.User) (*models.User, error) {
 }
 
 func (u *UserRepoImpl) Update(user *models.User) (*models.User, error) {
-	err := u.DB.Save(user).Error
+
+	log.Println("user", user)
+	err := u.DB.Updates(user).Error
 	if err != nil {
 		return nil, err
 	}
