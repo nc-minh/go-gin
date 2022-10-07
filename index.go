@@ -14,9 +14,6 @@ func main() {
 	//static file
 	r.Static("/assets", "./assets")
 
-	//connect postgres database
-	// db.ConnnectPostgres()
-
 	//GET method
 	r.GET("/ping", getPing)
 
@@ -61,7 +58,10 @@ func main() {
 
 	//books service
 	r.POST("/books", handlers.AddBook)
-	r.GET("/books", handlers.GetAllBooks)
+	r.GET("/books", handlers.GetBooks)
+	r.GET("/books/:id", handlers.GetBook)
+	r.PUT("/books/:id", handlers.UpdateBook)
+	r.DELETE("/books/:id", handlers.DeleteBook)
 
 	r.GET("/users", handlers.GetAllUsers)
 	r.GET("/users/:id", handlers.GetUser)
@@ -83,17 +83,6 @@ func postPing(ctx *gin.Context) {
 		"message": "This is a post request",
 	})
 }
-
-// func getUser(ctx *gin.Context) {
-// 	id := ctx.Param("id")
-// 	ctx.String(http.StatusOK, "User ID: "+id)
-// }
-
-// func getUserWithQueryString(ctx *gin.Context) {
-// 	name := ctx.Query("name")
-// 	age := ctx.Query("age")
-// 	ctx.String(http.StatusOK, "Name: "+name+" Age: "+age)
-// }
 
 func getUserWithForm(ctx *gin.Context) {
 	name := ctx.PostForm("name")
