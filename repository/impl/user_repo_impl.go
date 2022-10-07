@@ -45,7 +45,6 @@ func (u *UserRepoImpl) Save(user *models.User) (*models.User, error) {
 
 func (u *UserRepoImpl) Update(user *models.User) (*models.User, error) {
 
-	log.Println("user", user)
 	err := u.DB.Updates(user).Error
 	if err != nil {
 		return nil, err

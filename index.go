@@ -59,8 +59,6 @@ func main() {
 		})
 	})
 
-	//init db
-
 	//books service
 	r.POST("/books", handlers.AddBook)
 	r.GET("/books", handlers.GetAllBooks)
