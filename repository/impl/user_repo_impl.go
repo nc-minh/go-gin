@@ -3,7 +3,6 @@ package repoimpl
 import (
 	"go-gin/models"
 	"go-gin/repository"
-	"log"
 
 	"gorm.io/gorm"
 )
