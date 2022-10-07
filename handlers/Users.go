@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -128,9 +127,8 @@ func AddUser(ctx *gin.Context) {
 	}
 
 	if err != nil {
-		log.Fatalln(err.Error())
 		ctx.JSON(http.StatusExpectationFailed, gin.H{
-			"message": "Create Error Failed",
+			"message": err.Error(),
 		})
 		return
 	}
@@ -138,9 +136,8 @@ func AddUser(ctx *gin.Context) {
 	result, err := UserRepo.Save(&user)
 
 	if err != nil {
-		log.Fatalln(err.Error())
 		ctx.JSON(http.StatusExpectationFailed, gin.H{
-			"message": "Create Error Failed",
+			"message": err.Error(),
 		})
 		return
 	}
