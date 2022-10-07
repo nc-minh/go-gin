@@ -7,7 +7,10 @@ import (
 	"gorm.io/gorm"
 )
 
-var UserRepo = repoimpl.NewUserRepo(db.ConnnectPostgres().DB)
+var connected = db.ConnnectPostgres().DB
+
+var UserRepo = repoimpl.NewUserRepo(connected)
+var BookRepo = repoimpl.NewBookRepo(connected)
 
 type handler struct {
 	DB *gorm.DB
